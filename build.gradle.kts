@@ -78,6 +78,7 @@ bintray {
         vcsUrl = "$url.git"
         issueTrackerUrl = "$url/issues"
         publicDownloadNumbers = true
+        setLicenses("Apache-2.0")
         version.apply {
             name = v
             vcsTag = v
