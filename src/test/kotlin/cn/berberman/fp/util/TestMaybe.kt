@@ -4,6 +4,7 @@ import cn.berberman.fp.util.maybe.Nothing
 import cn.berberman.fp.util.maybe.`do`
 import cn.berberman.fp.util.maybe.bind
 import cn.berberman.fp.util.maybe.maybe
+import cn.berberman.fp.util.maybe.wrapMaybe
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -11,30 +12,30 @@ class TestMaybe {
 
     @Test
     fun testMap() {
-        val x = maybe(233)
-        assertEquals(maybe(234), x map { it.inc() })
+        val x = wrapMaybe(233)
+        assertEquals(wrapMaybe(234), x map { it.inc() })
     }
 
     @Test
     fun testAp() {
-        val x = maybe(233)
+        val x = wrapMaybe(233)
         val y = { i: Int -> i.inc() }.maybe()
-        assertEquals(maybe(234), x ap y)
+        assertEquals(wrapMaybe(234), x ap y)
     }
 
     @Test
     fun testFlatMap() {
-        val x = maybe(233)
-        assertEquals(maybe(234), x flatMap { maybe(it.inc()) })
+        val x = wrapMaybe(233)
+        assertEquals(wrapMaybe(234), x flatMap { wrapMaybe(it.inc()) })
         assertEquals(Nothing(), x flatMap { Nothing<Int>() })
     }
 
     @Test
     fun testNotation() {
-        val x = maybe(233)
-        val y = maybe(123)
+        val x = wrapMaybe(233)
+        val y = wrapMaybe(123)
         assertEquals(
-            maybe(356),
+            wrapMaybe(356),
             `do` {
                 val xx = bind(x)
                 val yy = bind(y)

@@ -15,8 +15,7 @@ fun <T, R1, R2, R3, R> liftA3(
     t3: State<T, R3>,
     f: ((R1, R2, R3) -> R)
 ): State<T, R> =
-    t3 ap t2.ap(t1.map { a -> f.curried()(a) }
-    )
+    t3 ap t2.ap(t1.map { a -> f.curried()(a) })
 
 fun <T, R1, R2, R3, R4, R> liftA4(
     t1: State<T, R1>,
