@@ -28,6 +28,29 @@ fun <T> Result<T>.either() =
     else
         Either.left(exceptionOrNull()!!)
 
+inline fun <reified L : Throwable, T> Result<T>.specify() =
+    if (isSuccess)
+        Either.right<L, T>(getOrThrow())
+    else
+        Either.left(exceptionOrNull() as L)
+
+
+inline fun <reified L : Throwable, R> runCatchingEither(block: () -> R): Either<L, R> =
+    try {
+        wrapEither(block())
+    } catch (e: Throwable) {
+        // e MUST be `L`
+        Left(e as L)
+    }
+
+inline fun <T, reified L : Throwable, R> T.runCatchingEither(block: T.() -> R): Either<L, R> =
+    try {
+        wrapEither(block())
+    } catch (e: Throwable) {
+        // e MUST be `L`
+        Left(e as L)
+    }
+
 
 fun <L, R1, R2, R> liftA2(t1: Either<L, R1>, t2: Either<L, R2>, f: ((R1, R2) -> R)) =
     t2 ap t1.map { a -> f.curried()(a) }
