@@ -1,7 +1,5 @@
 package cn.berberman.fp.util.either
 
-import cn.berberman.fp.util.curried
-
 
 inline fun <L, R> Either<L, R>.then(block: (R) -> Unit) = apply {
     if (this is Right)
@@ -50,19 +48,3 @@ inline fun <T, reified L : Throwable, R> T.runCatchingEither(block: T.() -> R): 
         // e MUST be `L`
         Left(e as L)
     }
-
-
-fun <L, R1, R2, R> liftA2(t1: Either<L, R1>, t2: Either<L, R2>, f: ((R1, R2) -> R)) =
-    t2 ap t1.map { a -> f.curried()(a) }
-
-fun <L, R1, R2, R3, R> liftA3(t1: Either<L, R1>, t2: Either<L, R2>, t3: Either<L, R3>, f: ((R1, R2, R3) -> R)) =
-    t3 ap t2.ap(t1.map { a -> f.curried()(a) })
-
-fun <L, R1, R2, R3, R4, R> liftA4(
-    t1: Either<L, R1>,
-    t2: Either<L, R2>,
-    t3: Either<L, R3>,
-    t4: Either<L, R4>,
-    f: ((R1, R2, R3, R4) -> R)
-) =
-    t4 ap t3.ap(t2 ap t1.map { a -> f.curried()(a) })

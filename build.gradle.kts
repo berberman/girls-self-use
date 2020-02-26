@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "cn.berberman"
-version = "0.1.0-dev-1"
+version = "0.1.0-dev-2"
 
 repositories {
     mavenCentral()
@@ -14,7 +14,6 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     testImplementation(kotlin("test-junit"))
-
 }
 
 tasks {
@@ -45,7 +44,7 @@ val fat = tasks.register<Jar>("fatJar") {
 tasks.register("allJars") {
     group = JavaBasePlugin.BUILD_TASK_NAME
     description = "Assembles all jars in one task"
-    dependsOn( sources, fat, tasks.jar)
+    dependsOn(sources, fat, tasks.jar)
 }
 
 val rename = tasks.register("renamePomFile") {

@@ -1,5 +1,7 @@
 package cn.berberman.fp.util.either
 
+import cn.berberman.fp.util.curried
+
 sealed class Either<L, out R> {
 
     abstract infix fun <T> map(f: (R) -> T): Either<L, T>
@@ -12,6 +14,22 @@ sealed class Either<L, out R> {
         fun <L, R> right(value: R): Either<L, R> = Right(value)
 
         fun <L, R> left(value: L): Either<L, R> = Left(value)
+
+        fun <L, R1, R2, R> liftA2(t1: Either<L, R1>, t2: Either<L, R2>, f: ((R1, R2) -> R)) =
+            t2 ap t1.map { a -> f.curried()(a) }
+
+        fun <L, R1, R2, R3, R> liftA3(t1: Either<L, R1>, t2: Either<L, R2>, t3: Either<L, R3>, f: ((R1, R2, R3) -> R)) =
+            t3 ap t2.ap(t1.map { a -> f.curried()(a) })
+
+        fun <L, R1, R2, R3, R4, R> liftA4(
+            t1: Either<L, R1>,
+            t2: Either<L, R2>,
+            t3: Either<L, R3>,
+            t4: Either<L, R4>,
+            f: ((R1, R2, R3, R4) -> R)
+        ) =
+            t4 ap t3.ap(t2 ap t1.map { a -> f.curried()(a) })
+
     }
 }
 

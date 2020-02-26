@@ -30,7 +30,7 @@ sealed class Maybe<T> {
         when {
             this is Nothing<*> && other is Nothing<*> -> true
             this is Just<*> && other is Just<*> -> this.value == other.value
-            else                                      -> false
+            else -> false
         }
 
     override fun hashCode() =
@@ -40,7 +40,7 @@ sealed class Maybe<T> {
 
 }
 
-class Just<T> internal constructor(override val value: T) : Maybe<T>() {
+class Just<T>(override val value: T) : Maybe<T>() {
     override val isPresent: Boolean = true
 
     override fun <R> map(f: (T) -> R): Maybe<R> =
@@ -57,7 +57,7 @@ class Just<T> internal constructor(override val value: T) : Maybe<T>() {
     override fun toString(): String = "Just[$value]"
 }
 
-class Nothing<T> internal constructor() : Maybe<T>() {
+class Nothing<T> : Maybe<T>() {
     override val value: T
         get() = throw UnsupportedOperationException("Nothing")
 
