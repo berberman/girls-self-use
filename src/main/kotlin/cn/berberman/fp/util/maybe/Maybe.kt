@@ -21,7 +21,9 @@ sealed class Maybe<T> {
         fun <T> empty(): Maybe<T> = Nothing()
 
         fun <T> fromNullable(value: T?) =
-            value?.let { from(it) } ?: empty()
+            if (value == null)
+                empty()
+            else from(value)
 
     }
 

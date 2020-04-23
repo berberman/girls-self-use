@@ -4,22 +4,22 @@ import cn.berberman.fp.util.BindException
 import kotlin.coroutines.*
 
 object NotationScopeMaybe {
-    fun <T> `return`(value: T) = Maybe.from(value)
-}
+    fun <T> pure(value: T) = Maybe.from(value)
 
-suspend fun <T> bind(value: Maybe<T>): T {
-    return suspendCoroutine {
-        it.resumeWith(
-            if (value.isPresent)
-                Result.success(value.value)
-            else
-                Result.failure(BindException)
-        )
+    suspend fun <T> bind(value: Maybe<T>): T {
+        return suspendCoroutine {
+            it.resumeWith(
+                if (value.isPresent)
+                    Result.success(value.value)
+                else
+                    Result.failure(BindException)
+            )
+        }
     }
 }
 
-fun <T> `do`(lambda: suspend NotationScopeMaybe.() -> Maybe<T>): Maybe<T> {
-    var r = Maybe.empty<T>()
+fun <T> Maybe.Companion.fx(lambda: suspend NotationScopeMaybe.() -> Maybe<T>): Maybe<T> {
+    var r = empty<T>()
     lambda.startCoroutine(NotationScopeMaybe, object : Continuation<Maybe<T>> {
         override val context: CoroutineContext = EmptyCoroutineContext
 

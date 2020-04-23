@@ -1,10 +1,7 @@
 package cn.berberman.fp.util
 
+import cn.berberman.fp.util.maybe.*
 import cn.berberman.fp.util.maybe.Nothing
-import cn.berberman.fp.util.maybe.`do`
-import cn.berberman.fp.util.maybe.bind
-import cn.berberman.fp.util.maybe.maybe
-import cn.berberman.fp.util.maybe.wrapMaybe
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -36,18 +33,18 @@ class TestMaybe {
         val y = wrapMaybe(123)
         assertEquals(
             wrapMaybe(356),
-            `do` {
+            Maybe.fx {
                 val xx = bind(x)
                 val yy = bind(y)
-                `return`(xx + yy)
+                pure(xx + yy)
             }
         )
         assertEquals(
             Nothing(),
-            `do` {
+            Maybe.fx {
                 val xx = bind(x)
-                val yy = bind(Nothing<Int>())
-                `return`(xx + yy)
+                val yy = bind(Maybe.empty<Int>())
+                pure(xx + yy)
             }
         )
     }
