@@ -3,7 +3,6 @@ package cn.berberman.girls.utils
 import cn.berberman.girls.utils.maybe.*
 import cn.berberman.girls.utils.maybe.Nothing
 import org.junit.Test
-import java.util.*
 import kotlin.test.assertEquals
 
 class TestMaybe {
@@ -17,7 +16,7 @@ class TestMaybe {
     @Test
     fun testAp() {
         val x = wrapMaybe(233)
-        val y = { i: Int -> i.inc() }.maybe()
+        val y = { i: Int -> i.inc() }.toMaybe()
         assertEquals(wrapMaybe(234), x ap y)
     }
 
@@ -48,9 +47,5 @@ class TestMaybe {
                 pure(xx + yy)
             }
         )
-    }
-
-    fun t(){
-
     }
 }

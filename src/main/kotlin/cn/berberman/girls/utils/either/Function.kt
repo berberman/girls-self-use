@@ -19,8 +19,13 @@ fun <L, R> Either<L, R>.valueOrNull(): R? =
 
 fun <L, R> wrapEither(value: R) = Right<L, R>(value)
 
+fun <T, R, U> either(f: (T) -> U, g: (R) -> U, e: Either<T, R>) =
+    when (e) {
+        is Left  -> f(e.value)
+        is Right -> g(e.value)
+    }
 
-fun <T> Result<T>.either() =
+fun <T> Result<T>.toEither() =
     if (isSuccess)
         Either.right<Throwable, T>(getOrThrow())
     else
