@@ -1,6 +1,6 @@
-package cn.berberman.fp.util.state
+package cn.berberman.girls.utils.state
 
-import cn.berberman.fp.util.curried
+import cn.berberman.girls.utils.curried
 
 interface State<T, R> {
 

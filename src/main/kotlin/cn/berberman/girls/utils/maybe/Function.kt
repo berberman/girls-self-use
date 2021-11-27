@@ -1,6 +1,6 @@
-package cn.berberman.fp.util.maybe
+package cn.berberman.girls.utils.maybe
 
-import cn.berberman.fp.util.curried
+import cn.berberman.girls.utils.curried
 import java.util.*
 
 
@@ -15,13 +15,13 @@ inline fun <T> Maybe<T>.otherwise(block: () -> Unit) = apply {
     if (!isPresent) block()
 }
 
-fun <T> T?.maybe() = Maybe.fromNullable(this)
+fun <T> T?.maybe(): Maybe<T> = Maybe.fromNullable(this)
 
-fun <T> wrapMaybe(value: T) = Just(value)
+fun <T> wrapMaybe(value: T): Maybe<T> = Just(value)
 
 fun <T> Optional<T>.toMaybe() =
     if (isPresent)
-        wrapMaybe(get())
+        wrapMaybe(get()!!)
     else Nothing<T>()
 
 inline fun <T> T.justIf(predicate: (T) -> Boolean) =

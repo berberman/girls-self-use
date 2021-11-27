@@ -1,2 +1,2 @@
-rootProject.name = "fp-utils"
+rootProject.name = "girls-own-use"
 

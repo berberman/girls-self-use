@@ -1,6 +1,6 @@
-package cn.berberman.fp.util.either
+package cn.berberman.girls.utils.either
 
-import cn.berberman.fp.util.BindException
+import cn.berberman.girls.utils.BindException
 import kotlin.coroutines.*
 
 object NotationScopeEither {

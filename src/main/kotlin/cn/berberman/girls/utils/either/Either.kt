@@ -1,6 +1,6 @@
-package cn.berberman.fp.util.either
+package cn.berberman.girls.utils.either
 
-import cn.berberman.fp.util.curried
+import cn.berberman.girls.utils.curried
 
 sealed class Either<L, out R> {
 

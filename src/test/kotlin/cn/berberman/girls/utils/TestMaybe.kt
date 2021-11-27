@@ -1,8 +1,9 @@
-package cn.berberman.fp.util
+package cn.berberman.girls.utils
 
-import cn.berberman.fp.util.maybe.*
-import cn.berberman.fp.util.maybe.Nothing
+import cn.berberman.girls.utils.maybe.*
+import cn.berberman.girls.utils.maybe.Nothing
 import org.junit.Test
+import java.util.*
 import kotlin.test.assertEquals
 
 class TestMaybe {
@@ -47,5 +48,9 @@ class TestMaybe {
                 pure(xx + yy)
             }
         )
+    }
+
+    fun t(){
+
     }
 }

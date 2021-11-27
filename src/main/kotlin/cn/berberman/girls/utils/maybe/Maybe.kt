@@ -1,4 +1,4 @@
-package cn.berberman.fp.util.maybe
+package cn.berberman.girls.utils.maybe
 
 sealed class Maybe<T> {
 
@@ -20,7 +20,7 @@ sealed class Maybe<T> {
 
         fun <T> empty(): Maybe<T> = Nothing()
 
-        fun <T> fromNullable(value: T?) =
+        fun <T> fromNullable(value: T?): Maybe<T> =
             if (value == null)
                 empty()
             else from(value)
@@ -31,8 +31,8 @@ sealed class Maybe<T> {
     override fun equals(other: Any?): Boolean =
         when {
             this is Nothing<*> && other is Nothing<*> -> true
-            this is Just<*> && other is Just<*> -> this.value == other.value
-            else -> false
+            this is Just<*> && other is Just<*>       -> this.value == other.value
+            else                                      -> false
         }
 
     override fun hashCode() =

@@ -1,4 +1,4 @@
-package cn.berberman.fp.util.either
+package cn.berberman.girls.utils.either
 
 
 inline fun <L, R> Either<L, R>.then(block: (R) -> Unit) = apply {
@@ -13,7 +13,7 @@ inline fun <L, R> Either<L, R>.otherwise(block: (L) -> Unit) = apply {
 
 fun <L, R> Either<L, R>.valueOrNull(): R? =
     when (this) {
-        is Left -> null
+        is Left  -> null
         is Right -> value
     }
 

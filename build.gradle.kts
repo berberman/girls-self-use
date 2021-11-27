@@ -1,114 +1,64 @@
 plugins {
-    kotlin("jvm") version "1.3.72"
-    id("com.jfrog.bintray") version "1.8.4"
+    kotlin("jvm") version "1.6.0"
     `maven-publish`
+    signing
 }
 
 group = "cn.berberman"
-version = "0.1.0-dev-2"
+version = "0.1.0"
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
     testImplementation(kotlin("test-junit"))
 }
 
-tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-}
-
-
-val sources = tasks.register<Jar>("sourcesJar") {
-    group = JavaBasePlugin.BUILD_TASK_NAME
-    description = "Creates sources jar"
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allSource)
-}
-
-val fat = tasks.register<Jar>("fatJar") {
-    group = JavaBasePlugin.BUILD_TASK_NAME
-    description = "Packs binary output with dependencies"
-    archiveClassifier.set("all")
-    from(sourceSets.main.get().output)
-    from({ configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) } })
-}
-
-tasks.register("allJars") {
-    group = JavaBasePlugin.BUILD_TASK_NAME
-    description = "Assembles all jars in one task"
-    dependsOn(sources, fat, tasks.jar)
-}
-
-val rename = tasks.register("renamePomFile") {
-    dependsOn(tasks.publishToMavenLocal)
-    doLast {
-        val path = "${buildDir.absolutePath}/publications/maven/"
-        val old = File(path + "pom-default.xml")
-        val f = File("$path${project.name}-$version.pom")
-        old.renameTo(f)
-    }
-}
-
-tasks.bintrayUpload.configure {
-    dependsOn(rename)
-}
-
-bintray {
-    user = "berberman"
-    key = System.getenv("BintrayToken")
-    setConfigurations("archives")
-    val v = version.toString()
-    val url = "https://github.com/berberman/fp-utils"
-    publish = true
-    pkg.apply {
-        name = project.name
-        desc = "functional utilities"
-        repo = "maven"
-        userOrg = "berberman"
-        githubRepo = "berberman/fp-utils"
-        vcsUrl = "$url.git"
-        issueTrackerUrl = "$url/issues"
-        publicDownloadNumbers = true
-        setLicenses("Apache-2.0")
-        version.apply {
-            name = v
-            vcsTag = v
-            websiteUrl = "$url/releases/tag/$v"
-        }
-    }
-}
-
 publishing {
-    repositories {
-        maven("$buildDir/repo")
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/berberman/fp-utils")
-            credentials {
-                username = "berberman"
-                password = System.getenv("GitHubToken")
+    publications {
+        create<MavenPublication>("maven") {
+            artifactId = project.name
+            from(components["java"])
+            pom {
+                name.set("Girls' Self Use")
+                description.set("Some utilities")
+                url.set("https://github.com/berberman/girls-self-use")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("berberman")
+                        name.set("Potato Hatsue")
+                        email.set("berberman@yandex.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:github.com/berberman/girls-self-use.git")
+                    developerConnection.set("scm:git:ssh://github.com/berberman/girls-self-use.git")
+                    url.set("https://github.com/berberman/girls-self-use")
+                }
+
             }
         }
     }
-
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
+    signing {
+        sign(publishing.publications["maven"])
+    }
+    tasks.javadoc {
+        if (JavaVersion.current().isJava9Compatible) {
+            (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
         }
     }
 }
 
-artifacts {
-    add("archives", tasks.jar)
-    add("archives", fat)
-    add("archives", sources)
-    add("archives", File("${buildDir.absolutePath}/publications/maven/${project.name}-$version.pom"))
-}

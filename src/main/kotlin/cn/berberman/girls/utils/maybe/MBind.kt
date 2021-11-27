@@ -1,6 +1,6 @@
-package cn.berberman.fp.util.maybe
+package cn.berberman.girls.utils.maybe
 
-import cn.berberman.fp.util.BindException
+import cn.berberman.girls.utils.BindException
 import kotlin.coroutines.*
 
 object NotationScopeMaybe {
