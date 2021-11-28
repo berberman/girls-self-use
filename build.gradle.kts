@@ -52,6 +52,15 @@ publishing {
             }
         }
     }
+    repositories {
+        maven("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            name = "Sonatype"
+            credentials {
+                username = property("sonatypeUsername")?.toString()
+                password = property("sonatypePassword")?.toString()
+            }
+        }
+    }
     signing {
         sign(publishing.publications["maven"])
     }

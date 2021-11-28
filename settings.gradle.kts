@@ -1,2 +1,2 @@
-rootProject.name = "girls-own-use"
+rootProject.name = "girls-self-use"
 
