@@ -56,8 +56,8 @@ publishing {
         maven("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
             name = "Sonatype"
             credentials {
-                username = property("sonatypeUsername")?.toString()
-                password = property("sonatypePassword")?.toString()
+                username = properties.getOrDefault("sonatypeUsername", "")?.toString()
+                password = properties.getOrDefault("sonatypePassword", "")?.toString()
             }
         }
     }
