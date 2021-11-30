@@ -25,11 +25,12 @@ fun <T, R, U> either(f: (T) -> U, g: (R) -> U, e: Either<T, R>) =
         is Right -> g(e.value)
     }
 
-fun <T> Result<T>.toEither() =
+inline fun <T, reified L : Throwable> Result<T>.toEither() =
     if (isSuccess)
         Either.right<Throwable, T>(getOrThrow())
     else
-        Either.left(exceptionOrNull()!!)
+    // throw cast error if the throwable is unexpected
+        Either.left(exceptionOrNull()!! as L)
 
 inline fun <reified L : Throwable, T> Result<T>.specify() =
     if (isSuccess)
@@ -42,14 +43,18 @@ inline fun <reified L : Throwable, R> runCatchingEither(block: () -> R): Either<
     try {
         wrapEither(block())
     } catch (e: Throwable) {
-        // e MUST be `L`
-        Left(e as L)
+        if (e is L)
+            Left(e)
+        else
+            throw e
     }
 
 inline fun <T, reified L : Throwable, R> T.runCatchingEither(block: T.() -> R): Either<L, R> =
     try {
         wrapEither(block())
     } catch (e: Throwable) {
-        // e MUST be `L`
-        Left(e as L)
+        if (e is L)
+            Left(e)
+        else
+            throw e
     }
