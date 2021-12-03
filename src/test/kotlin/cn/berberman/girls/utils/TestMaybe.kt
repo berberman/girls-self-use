@@ -28,7 +28,7 @@ class TestMaybe {
     }
 
     @Test
-    fun testNotation() {
+    fun testFx() {
         val x = wrapMaybe(233)
         val y = wrapMaybe(123)
         assertEquals(

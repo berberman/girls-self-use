@@ -1,6 +1,7 @@
 package cn.berberman.girls.utils.maybe
 
 import cn.berberman.girls.utils.curried
+import cn.berberman.girls.utils.identity
 import java.util.*
 
 
@@ -20,7 +21,7 @@ fun <T, R> maybe(y: R, f: (T) -> R, mx: Maybe<T>) =
         f(mx.value)
     else y
 
-fun <T> fromMaybe(y: T, mx: Maybe<T>): T = maybe(y, { it }, mx)
+fun <T> fromMaybe(y: T, mx: Maybe<T>): T = maybe(y, ::identity, mx)
 
 fun <T> T?.toMaybe(): Maybe<T> = Maybe.fromNullable(this)
 

@@ -32,13 +32,6 @@ inline fun <T, reified L : Throwable> Result<T>.toEither() =
     // throw cast error if the throwable is unexpected
         Either.left(exceptionOrNull()!! as L)
 
-inline fun <reified L : Throwable, T> Result<T>.specify() =
-    if (isSuccess)
-        Either.right<L, T>(getOrThrow())
-    else
-        Either.left(exceptionOrNull() as L)
-
-
 inline fun <reified L : Throwable, R> runCatchingEither(block: () -> R): Either<L, R> =
     try {
         wrapEither(block())

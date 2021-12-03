@@ -1,9 +1,10 @@
 package cn.berberman.girls.utils.maybe
 
-import cn.berberman.girls.utils.BindException
 import kotlin.coroutines.*
 
-object NotationScopeMaybe {
+private object BindException : Exception()
+
+object MaybeFx {
     fun <T> pure(value: T) = Maybe.from(value)
 
     suspend fun <T> bind(value: Maybe<T>): T {
@@ -18,9 +19,9 @@ object NotationScopeMaybe {
     }
 }
 
-fun <T> Maybe.Companion.fx(lambda: suspend NotationScopeMaybe.() -> Maybe<T>): Maybe<T> {
+fun <T> Maybe.Companion.fx(lambda: suspend MaybeFx.() -> Maybe<T>): Maybe<T> {
     var r = empty<T>()
-    lambda.startCoroutine(NotationScopeMaybe, object : Continuation<Maybe<T>> {
+    lambda.startCoroutine(MaybeFx, object : Continuation<Maybe<T>> {
         override val context: CoroutineContext = EmptyCoroutineContext
 
         override fun resumeWith(result: Result<Maybe<T>>) {
