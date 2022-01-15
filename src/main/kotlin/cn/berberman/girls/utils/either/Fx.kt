@@ -7,7 +7,7 @@ private class BindException(val failureValue: Either<*, *>) : Exception()
 class EitherFx<L, R> {
     fun pure(value: R) = Either.right<L, R>(value)
 
-    suspend fun bind(value: Either<L, R>): R {
+    suspend fun <T> bind(value: Either<L, T>): T {
         return suspendCoroutine {
             it.resumeWith(
                 if (value is Right)
