@@ -17,6 +17,10 @@ object MaybeFx {
             )
         }
     }
+
+    @JvmName("bindExt")
+    suspend fun <T> Maybe<T>.bind() = bind(this)
+    suspend fun <T> T?.bindNullable() = bind(toMaybe())
 }
 
 fun <T> Maybe.Companion.fx(lambda: suspend MaybeFx.() -> Maybe<T>): Maybe<T> {

@@ -17,6 +17,9 @@ class EitherFx<L, R> {
             )
         }
     }
+
+    @JvmName("bindExt")
+    suspend fun <T> Either<L, T>.bind() = bind(this)
 }
 
 @Suppress("UNCHECKED_CAST")
