@@ -1,11 +1,11 @@
 plugins {
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version "1.6.10"
     `maven-publish`
     signing
 }
 
 group = "cn.berberman"
-version = "0.1.1"
+version = "0.1.2"
 
 java {
     withJavadocJar()
